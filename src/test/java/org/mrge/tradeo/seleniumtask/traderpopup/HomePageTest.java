@@ -5,16 +5,13 @@
  */
 package org.mrge.tradeo.seleniumtask.traderpopup;
 
-import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoHomePage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.Select;
 
 public class HomePageTest {
   private WebDriver driver;
@@ -24,21 +21,25 @@ public class HomePageTest {
 
   @Before
   public void setUp() throws Exception {
-      System.out.println("1 Going to " + TradeoHomePage.pageUrl);
     driver = new FirefoxDriver();
-//    Thread.sleep(15,000);
     baseUrl = TradeoHomePage.pageUrl;
     driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
   }
 
   @Test
   public void signInAsCustomerFromHomePage() throws Exception {
-      System.out.println(" Going to " + TradeoHomePage.pageUrl);
     driver.get(TradeoHomePage.pageUrl);
-    driver.findElement(By.linkText("selenium")).click();
-    driver.findElement(By.xpath("//ul[@id='user-links']/li[3]/a/span")).click();
-    driver.findElement(By.linkText("Your stars")).click();
-    assertEquals("You don’t have any starred repositories yet.", driver.findElement(By.cssSelector("h3")).getText());
+    WebElement language = driver.findElement(By.xpath(TradeoHomePage.languageXpath));
+    assertEquals(TradeoHomePage.languageTextEnglish, language.getText());
+
+    WebElement menu = driver.findElement(By.xpath(TradeoHomePage.menuXpath));
+    assertEquals(TradeoHomePage.menuTextEnglish, menu.getText());
+
+    WebElement signinLink = driver.findElement(By.id(TradeoHomePage.signinLinkId));
+    assertEquals(TradeoHomePage.signinTextEnglish, signinLink.getText());
+
+    signinLink.click();
+
   }
 
   @After
