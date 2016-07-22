@@ -24,14 +24,16 @@ public class HomePageTest {
 
   @Before
   public void setUp() throws Exception {
+      System.out.println("1 Going to " + TradeoHomePage.pageUrl);
     driver = new FirefoxDriver();
-    Thread.sleep(15,000);
-//    baseUrl = "https://github.com/";
-    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+//    Thread.sleep(15,000);
+    baseUrl = TradeoHomePage.pageUrl;
+    driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
   }
 
   @Test
   public void signInAsCustomerFromHomePage() throws Exception {
+      System.out.println(" Going to " + TradeoHomePage.pageUrl);
     driver.get(TradeoHomePage.pageUrl);
     driver.findElement(By.linkText("selenium")).click();
     driver.findElement(By.xpath("//ul[@id='user-links']/li[3]/a/span")).click();
