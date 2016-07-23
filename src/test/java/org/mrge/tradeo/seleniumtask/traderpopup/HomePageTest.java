@@ -10,8 +10,13 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoHomePage;
+import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoMyAccountPage;
+import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoSignInPage;
+import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoTestCustomer;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HomePageTest {
   private WebDriver driver;
@@ -27,7 +32,28 @@ public class HomePageTest {
   }
 
   @Test
+  public void cannotSignInWithWrongPasswordAsCustomerFromHomePage() throws Exception {
+    gotoHomePageAndSignIn(TradeoTestCustomer.loginWrongPassword);
+
+    WebDriverWait wait = new WebDriverWait(driver,5);
+    wait.until(ExpectedConditions.titleIs(TradeoSignInPage.title));
+
+    WebElement alert = driver.findElement(By.xpath(TradeoSignInPage.alertXpath));
+    assertEquals(TradeoSignInPage.invalidLoginAlertTextEnglish, alert.getText());
+  }
+
+  @Test
   public void signInAsCustomerFromHomePage() throws Exception {
+    gotoHomePageAndSignIn(TradeoTestCustomer.loginCorrectPassword);
+
+    WebDriverWait wait = new WebDriverWait(driver,5);
+    wait.until(ExpectedConditions.titleContains(TradeoMyAccountPage.title));
+
+    WebElement usernameLink = driver.findElement(By.xpath(TradeoHomePage.usernameXpath));
+    assertEquals(TradeoTestCustomer.usernameTextEnglish, usernameLink.getText());
+  }
+
+  private void gotoHomePageAndSignIn(String pass) {
     driver.get(TradeoHomePage.pageUrl);
     WebElement language = driver.findElement(By.xpath(TradeoHomePage.languageXpath));
     assertEquals(TradeoHomePage.languageTextEnglish, language.getText());
@@ -39,7 +65,9 @@ public class HomePageTest {
     assertEquals(TradeoHomePage.signinTextEnglish, signinLink.getText());
 
     signinLink.click();
-
+    driver.findElement(By.id(TradeoHomePage.userLoginFieldId)).sendKeys(TradeoTestCustomer.loginName);
+    driver.findElement(By.id(TradeoHomePage.userPasswordFieldId)).sendKeys(pass);
+    driver.findElement(By.xpath(TradeoHomePage.userLoginButtonXpath)).click();
   }
 
   @After
