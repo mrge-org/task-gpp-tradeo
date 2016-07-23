@@ -8,6 +8,8 @@ package org.mrge.tradeo.seleniumtask.traderpopup;
 import java.util.concurrent.TimeUnit;
 import org.junit.*;
 import static org.junit.Assert.*;
+import static org.mrge.tradeo.seleniumtask.utils.TestConstants.IMPLICIT_WAIT_IN_SEC;
+import static org.mrge.tradeo.seleniumtask.utils.TestConstants.WAIT_AFTER_CLICK_IN_SEC;
 
 import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoHomePage;
 import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoMyAccountPage;
@@ -28,14 +30,14 @@ public class HomePageTest {
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     baseUrl = TradeoHomePage.pageUrl;
-    driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+    driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_IN_SEC, TimeUnit.SECONDS);
   }
 
   @Test
   public void cannotSignInWithWrongPasswordAsCustomerFromHomePage() throws Exception {
     gotoHomePageAndSignIn(TradeoTestCustomer.loginWrongPassword);
 
-    WebDriverWait wait = new WebDriverWait(driver,5);
+    WebDriverWait wait = new WebDriverWait(driver,WAIT_AFTER_CLICK_IN_SEC);
     wait.until(ExpectedConditions.titleIs(TradeoSignInPage.title));
 
     WebElement alert = driver.findElement(By.xpath(TradeoSignInPage.alertXpath));
@@ -46,7 +48,7 @@ public class HomePageTest {
   public void signInAsCustomerFromHomePage() throws Exception {
     gotoHomePageAndSignIn(TradeoTestCustomer.loginCorrectPassword);
 
-    WebDriverWait wait = new WebDriverWait(driver,5);
+    WebDriverWait wait = new WebDriverWait(driver,WAIT_AFTER_CLICK_IN_SEC);
     wait.until(ExpectedConditions.titleContains(TradeoMyAccountPage.title));
 
     WebElement usernameLink = driver.findElement(By.xpath(TradeoHomePage.usernameXpath));
