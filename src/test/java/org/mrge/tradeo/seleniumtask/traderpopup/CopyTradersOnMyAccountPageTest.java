@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 import static org.mrge.tradeo.seleniumtask.utils.TestConstants.IMPLICIT_WAIT_IN_SEC;
 import static org.mrge.tradeo.seleniumtask.utils.TestConstants.WAIT_AFTER_CLICK_IN_SEC;
 
-import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoHomePage;
 import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoMyAccountPage;
 import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoTestCustomer;
 import org.mrge.tradeo.seleniumtask.pagesmodels.TradeoTradersPage;
@@ -20,12 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Created by gpetrov on 7/23/16.
  */
-public class CopyTradersOnMyAccountPageTest {
-
-    private WebDriver driver;
-    private boolean acceptNextAlert = true;
-    private StringBuffer verificationErrors = new StringBuffer();
-    private WebElement welcomePage;
+public class CopyTradersOnMyAccountPageTest extends TestBase{
 
     @Before
     public void setUp() throws Exception {
@@ -66,73 +60,9 @@ public class CopyTradersOnMyAccountPageTest {
     }
 
     @Test
-    public void startCopyingOpensNewTab() throws Exception{
-        WebElement startCopyingButton = welcomePage.findElement(By.xpath(TradeoMyAccountPage.startCopyingButtonXpath));
-        WebElement copyingVideo = welcomePage.findElement(By.xpath(TradeoMyAccountPage.copyingVideoXpath));
-        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", copyingVideo);
-        startCopyingButton.click();
-
-        //TODO see the newly opened browser window
-        WebDriverWait wait = new WebDriverWait(driver, WAIT_AFTER_CLICK_IN_SEC);
+    public void startCopyingOpensNewWindow() throws Exception{
+        WebDriverWait wait = openTradersPageViaStartCopyingButton(driver, welcomePage);
         wait.until(ExpectedConditions.titleContains(TradeoTradersPage.title));
     }
 
-    private void gotoHomePageAndSignIn(String pass) {
-        driver.get(TradeoHomePage.pageUrl);
-        WebElement language = driver.findElement(By.xpath(TradeoHomePage.languageXpath));
-        assertEquals(TradeoHomePage.languageTextEnglish, language.getText());
-
-        WebElement menu = driver.findElement(By.xpath(TradeoHomePage.menuXpath));
-        assertEquals(TradeoHomePage.menuTextEnglish, menu.getText());
-
-        WebElement signinLink = driver.findElement(By.id(TradeoHomePage.signinLinkId));
-        assertEquals(TradeoHomePage.signinTextEnglish, signinLink.getText());
-
-        signinLink.click();
-        driver.findElement(By.id(TradeoHomePage.userLoginFieldId)).sendKeys(TradeoTestCustomer.loginName);
-        driver.findElement(By.id(TradeoHomePage.userPasswordFieldId)).sendKeys(pass);
-        driver.findElement(By.xpath(TradeoHomePage.userLoginButtonXpath)).click();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        driver.quit();
-        String verificationErrorString = verificationErrors.toString();
-        if (!"".equals(verificationErrorString)) {
-            fail(verificationErrorString);
-        }
-    }
-
-    private boolean isElementPresent(By by) {
-        try {
-            driver.findElement(by);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    private boolean isAlertPresent() {
-        try {
-            driver.switchTo().alert();
-            return true;
-        } catch (NoAlertPresentException e) {
-            return false;
-        }
-    }
-
-    private String closeAlertAndGetItsText() {
-        try {
-            Alert alert = driver.switchTo().alert();
-            String alertText = alert.getText();
-            if (acceptNextAlert) {
-                alert.accept();
-            } else {
-                alert.dismiss();
-            }
-            return alertText;
-        } finally {
-            acceptNextAlert = true;
-        }
-    }
 }
