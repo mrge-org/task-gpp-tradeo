@@ -4,9 +4,10 @@ package org.mrge.tradeo.seleniumtask.pagesmodels;
  * Created by gpetrov on 7/23/16.
  */
 public class TradeoTestCustomer {
-    public static final String loginName = "gpetrov@netbeans.org";
-    public static final String loginCorrectPassword = "*0f~[x(2M8|,3!r";
-    public static final String loginWrongPassword = "wrongPass@123";
+    //TODO
+    public static final String loginName = "";
+    public static final String loginCorrectPassword = "";
+    public static final String usernameTextEnglish = "";
 
-    public static final String usernameTextEnglish = "George Tester";
+    public static final String loginWrongPassword = "wrongPass@123";
 }
